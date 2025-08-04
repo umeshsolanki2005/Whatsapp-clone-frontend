@@ -7,6 +7,7 @@ import { newMessage ,getMessages} from '../../../service/api';
 
 
 
+
 const Wrapper=styled(Box)`
     background-image : url(${'https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'});
     background-size: 50%;
@@ -25,8 +26,10 @@ const Messages =({person, conversation}) =>{
      const [value, setValue]= useState('');
 
      const [messages, setMessages]= useState([]);
-
+     const [newMessageFlag, setNewMessageFlag] =useState(false);
      const {account} =useContext(AccountContext);
+     const [file, setFile]= useState();
+     const [image,setImage]=useState('');
 
      useEffect(()=>{
         const getMessageDetails =async ()=>{
@@ -34,25 +37,38 @@ const Messages =({person, conversation}) =>{
             setMessages(data);
         }
         conversation._id && getMessageDetails();
-     },[person._id,conversation._id])
+     },[person._id,conversation._id, newMessageFlag])
 
       const sendText = async (e) => {
-  if (e.key !== 'Enter') return;
-
-  if (!conversation) return;
-
-  const message = {
+   const code= e.keyCode || e.which;
+   if(code===13){
+    let message= {};
+    if(!file){
+    message = {
     senderId: account.sub,
     recieverId: person.sub,
     conversationId: conversation._id,
     type: 'text',
     text: value
   };
+    }else{
+    message = {
+    senderId: account.sub,
+    recieverId: person.sub,
+    conversationId: conversation._id,
+    type: 'file',
+    text: image
+    }
+   }
+  
   console.log(message)
  
   await newMessage(message);
   setValue('');
-};
+  setFile('');
+  setImage('');
+  setNewMessageFlag(prev=> !prev)
+}};
 
 
 
@@ -71,6 +87,9 @@ const Messages =({person, conversation}) =>{
               sendText={sendText}
               setValue={setValue}
               value={value}
+              file={file}
+              setFile={setFile}
+              setImage={setImage}
             />
         </Wrapper>
     )

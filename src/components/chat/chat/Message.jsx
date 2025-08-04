@@ -4,25 +4,26 @@ import {Box, Typography, styled } from '@mui/material';
 import { formatDate } from '../../../utils/common-utils';
 
 
-const Own =styled(Box)`
-  background: #dcf8c6;
-  max-width:60%;
-  margin-left:auto;
-  padding:5px;
-  width:fit-content;
-  display:flex;
-  border-radius:10px;
-  word-break: break-word;
-`
-const Wrapper =styled(Box)`
-  background: #dcf8c6;
-  max-width:60%;
-  padding:5px;
-  width:fit-content;
-  display:flex;
-  border-radius:10px;
-  word-break: break-word;
-`
+const Own = styled(Box)`
+    background: #dcf8c6;
+    padding: 5px;
+    max-width: 60%;
+    width: fit-content;
+    margin-left: auto;
+    display: flex;
+    border-radius: 10px;
+    word-break: break-word;
+`;
+
+const Wrapper = styled(Box)`
+    background: #FFFFFF;
+    padding: 5px;
+    max-width: 60%;
+    width: fit-content;
+    display: flex;
+    border-radius: 10px;
+    word-break: break-word;
+`;
 const Text=styled(Typography)`
    font-size: 14px;
    padding: 0 25px 0 5px;
@@ -46,7 +47,8 @@ export const Message =({message})=>{
             <Time>{formatDate(message.createdAt)}</Time>
         </Own>
 
-    :<Wrapper>
+    :
+    <Wrapper>
         <Text>{message.text}</Text>
         <Time>{formatDate(message.createdAt)}</Time>
     </Wrapper>
