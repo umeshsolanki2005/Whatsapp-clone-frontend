@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
-
 import { EmojiEmotions, AttachFile, Mic } from '@mui/icons-material';
 import { Box, styled, InputBase } from '@mui/material';
-
 import { uploadFile } from '../../../service/api';
 
 const Container = styled(Box)`
@@ -12,7 +10,7 @@ const Container = styled(Box)`
     display: flex;
     align-items: center;
     padding: 0 15px;
-    &  > * {
+    & > * {
         margin: 5px;
         color: #919191;
     }
@@ -30,13 +28,11 @@ const InputField = styled(InputBase)`
     padding-left: 25px;
     font-size: 14px;
     height: 20px;
-    width: 100%;
 `;
 
 const ClipIcon = styled(AttachFile)`
-    transform: 'rotate(40deg)'
+    transform: rotate(40deg);
 `;
-
 
 const Footer = ({ sendText, value, setValue, setFile, file, setImage }) => {
 
@@ -47,17 +43,27 @@ const Footer = ({ sendText, value, setValue, setFile, file, setImage }) => {
                 data.append("name", file.name);
                 data.append("file", file);
 
-                const response = await uploadFile(data);
-                setImage(response.data);
+                try {
+                    const response = await uploadFile(data);
+                    if (response && response.data) {
+                        setImage(response.data);
+                    } else {
+                        console.log('File upload failed:', response);
+                    }
+                } catch (error) {
+                    console.error('Upload API Error:', error);
+                }
             }
-        }
+        };
         getImage();
-    }, [file])
+    }, [file, setImage]);
 
     const onFileChange = (e) => {
-        setValue(e.target.files[0].name);
-        setFile(e.target.files[0]);
-    }
+        if (e.target.files[0]) {
+            setValue(e.target.files[0].name);
+            setFile(e.target.files[0]);
+        }
+    };
 
     return (
         <Container>
@@ -66,10 +72,10 @@ const Footer = ({ sendText, value, setValue, setFile, file, setImage }) => {
                 <ClipIcon />
             </label>
             <input
-                type='file'
+                type="file"
                 id="fileInput"
                 style={{ display: 'none' }}
-                onChange={(e) => onFileChange(e)}
+                onChange={onFileChange}
             />
 
             <Search>
@@ -77,13 +83,13 @@ const Footer = ({ sendText, value, setValue, setFile, file, setImage }) => {
                     placeholder="Type a message"
                     inputProps={{ 'aria-label': 'search' }}
                     onChange={(e) => setValue(e.target.value)}
-                    onKeyPress={(e) => sendText(e)}
+                    onKeyPress={sendText}
                     value={value}
                 />
             </Search>
             <Mic />
         </Container>
-    )
-}
+    );
+};
 
 export default Footer;
