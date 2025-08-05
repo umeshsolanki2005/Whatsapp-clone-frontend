@@ -8,7 +8,7 @@ import AccountProvider from './context/AccountProvider';
 
 import Loader from './components/loader/Loader';
 
-const Messenger = lazy(() => import('./components/Messenger'));
+const Messenger = lazy(() => import ('./components/messenger'));
 
 function App() {
 
