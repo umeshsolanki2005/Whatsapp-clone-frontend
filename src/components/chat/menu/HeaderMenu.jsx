@@ -1,68 +1,46 @@
-
 import { useState, useContext } from 'react';
 
 import { MoreVert } from '@mui/icons-material';
 import { Menu, MenuItem, styled } from '@mui/material';
 
-import { googleLogout } from '@react-oauth/google';
 import { AccountContext } from '../../../context/AccountProvider';
 import { UserContext } from '../../../context/UserProvider';
-
-import { clientId } from '../../../constants/data';
 
 //components
 import InfoDrawer from '../../drawer/Drawer';
 
 const MenuOption = styled(MenuItem)`
-    font-size: 14px
+    font-size: 14px;
     padding: 15px 60px 5px 24px;
     color: #4A4A4A;
 `;
 
-const Logout = styled(googleLogout)`
-    border: none;
-    box-shadow: none;
-`;
-
 const HeaderMenu = () => {
-    
-    const [open, setOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
     const [openDrawer, setOpenDrawer] = useState(false);
-    
-    const { setAccount, setShowloginButton, showlogoutButton, setShowlogoutButton } = useContext(AccountContext);
+
+    const { setAccount, setShowloginButton } = useContext(AccountContext);
     const { setPerson } = useContext(UserContext);
 
-
     const handleClick = (event) => {
-        setOpen(event.currentTarget);
+        setAnchorEl(event.currentTarget);
     };
 
     const handleClose = () => {
-        setOpen(null);
-    };
-
-    const onSignoutSuccess = () => {
-        alert("You have been logged out successfully");
-        console.clear();
-        setShowlogoutButton(false);
-        setShowloginButton(true);
-        setAccount('');
-        setPerson({});
+        setAnchorEl(null);
     };
 
     const toggleDrawer = () => {
         setOpenDrawer(true);
-    }
-
-
+    };
 
     return (
         <>
             <MoreVert onClick={handleClick} />
             <Menu
-                anchorEl={open}
+                anchorEl={anchorEl}
                 keepMounted
-                open={open}
+                open={Boolean(anchorEl)}
                 onClose={handleClose}
                 getContentAnchorEl={null}
                 anchorOrigin={{
@@ -74,21 +52,14 @@ const HeaderMenu = () => {
                     horizontal: 'right',
                 }}
             >
-                <MenuOption onClick={() => { handleClose(); toggleDrawer()}}>Profile</MenuOption>
-                <MenuOption onClick={() => { handleClose(); }}>
-                {/* { showlogoutButton ?
-                    <Logout
-                        clientId={clientId}
-                        buttonText="Logout"
-                        onLogoutSuccess={onSignoutSuccess}
-                    >
-                    </Logout> : null
-                } */}
+                <MenuOption onClick={() => { handleClose(); toggleDrawer(); }}>
+                    Profile
                 </MenuOption>
+                {/* Add logout button here later when implementing */}
             </Menu>
             <InfoDrawer open={openDrawer} setOpen={setOpenDrawer} profile={true} />
         </>
-    )
-}
+    );
+};
 
 export default HeaderMenu;
