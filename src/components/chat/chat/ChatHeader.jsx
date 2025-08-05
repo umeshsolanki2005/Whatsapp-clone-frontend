@@ -1,53 +1,62 @@
-import {Box, typography ,styled, Typography} from '@mui/material';
-import {Search, MoreVert} from '@mui/icons-material';
+import { useContext } from 'react';
+
+import { Box, Typography, styled } from '@mui/material';
+import { Search, MoreVert } from '@mui/icons-material';
+
+import { AccountContext } from '../../../context/AccountProvider';
 import { defaultProfilePicture } from '../../../constants/data';
 
-const Header= styled(Box)`
-    height:44px;
+const Header = styled(Box)`
+    height: 44px;
     background: #ededed;
-    padding: 8px 16px;
     display: flex;
-`
-
-const Image =styled('img')({
-    height: 40,
+    padding: 8px 16px;
+    align-items: center;
+`;
+    
+const Image = styled('img')({
     width: 40,
-    objectFit:'cover',
+    height: 40,
+    objectFit: 'cover',
     borderRadius: '50%'
-});
+})
 
-const Name= styled(Typography)`
+const Name = styled(Typography)`
     margin-left: 12px !important;
-`
-const Status= styled(Typography)`
-    margin-left: 12px !important;
-    font-size:12px;
-    color: rgb(0 ,0 ,0 ,0.6);
+`;
 
-`
-const RightContainer =styled(Box)`
-    margin-left :auto;
+const RightContainer = styled(Box)`
+    margin-left: auto;
     & > svg {
         padding: 8px;
-        font-size:26px;
-        color:#000;
-}
-`
+        font-size: 22px;
+        color: #000;
+    }
+`;
 
+const Status = styled(Typography)`
+    font-size: 12px !important;
+    color: rgb(0, 0, 0, 0.6);
+    margin-left: 12px !important;
+`;
 
-const ChatHeader =({person}) =>{
-    return(
+const ChatHeader = ({ person }) => {  
+
+    const url = person.picture || defaultProfilePicture;
+    
+    const { activeUsers } = useContext(AccountContext);
+
+    return (
         <Header>
-            <Image src={person.picture} alt="dp" />
+            <Image src={url} alt="display picture" />     
             <Box>
                 <Name>{person.name}</Name>
-                <Status>Offline</Status>
-            </Box>
+                <Status>{activeUsers?.find(user => user.sub === person.sub) ? 'Online' : 'Offline'}</Status>    
+            </Box>   
             <RightContainer>
                 <Search />
-                <MoreVert />
-
-            </RightContainer>
+                <MoreVert />    
+            </RightContainer> 
         </Header>
     )
 }

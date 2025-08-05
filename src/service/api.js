@@ -31,38 +31,34 @@ export const setConversation = async (data) => {
 
 export const getConversation = async (users) => {
     try {
-        let response=await axios.post(`${url}/conversation/get`, users);
+        let response = await axios.post(`${url}/conversation/get`, users);
         return response.data;
     } catch (error) {
         console.log('Error while calling getConversation API ', error);
     }
 }
 
-export const newMessage =async (data) =>{
-    try{
-         await axios.post(`${url}/message/add`,data);
-    }
-    catch(error){
-        console.log("Error while calling newmessage api",error.message);
+export const getMessages = async (id) => {
+    try {
+        let response = await axios.get(`${url}/message/get/${id}`);
+        return response.data
+    } catch (error) {
+        console.log('Error while calling getMessages API ', error);
     }
 }
 
-export const getMessages= async(id)=>{
-    try{
-        let response= await axios.get(`${url}/messages/get/${id}`);
-        return response.data;
-    }
-    catch(error){
-         console.log("Error while calling getmessage api",error.message);
+export const newMessages = async (data) => {
+    try {
+        return await axios.post(`${url}/message/add`, data);
+    } catch (error) {
+        console.log('Error while calling newConversations API ', error);
     }
 }
 
 export const uploadFile = async (data) => {
     try {
-        let response = await axios.post(`${url}/file/upload`, data);
-        return response.data; // Return the actual data, not the full response
+        return await axios.post(`${url}/file/upload`, data);
     } catch (error) {
-        console.log("Error while calling uploadFile api", error.message);
-        return null; // Return null instead of undefined
+        console.log('Error while calling newConversations API ', error);
     }
 }
