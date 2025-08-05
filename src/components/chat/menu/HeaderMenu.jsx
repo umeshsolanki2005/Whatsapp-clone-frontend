@@ -1,10 +1,10 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 
 import { MoreVert } from '@mui/icons-material';
 import { Menu, MenuItem, styled } from '@mui/material';
 
-import { AccountContext } from '../../../context/AccountProvider';
-import { UserContext } from '../../../context/UserProvider';
+//import { AccountContext } from '../../../context/AccountProvider';
+//import { UserContext } from '../../../context/UserProvider';
 
 //components
 import InfoDrawer from '../../drawer/Drawer';
@@ -19,8 +19,8 @@ const HeaderMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [openDrawer, setOpenDrawer] = useState(false);
 
-    const { setAccount, setShowloginButton } = useContext(AccountContext);
-    const { setPerson } = useContext(UserContext);
+   // const { setAccount, setShowloginButton } = useContext(AccountContext);
+    //const { setPerson } = useContext(UserContext);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
